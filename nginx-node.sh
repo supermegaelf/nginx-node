@@ -5,7 +5,6 @@ read -p "SNI domain: " SNI_DOMAIN
 apt update && apt install curl gnupg2 ca-certificates lsb-release -y
 
 curl -fsSL https://nginx.org/keys/nginx_signing.key | apt-key add -
-
 echo "deb http://nginx.org/packages/ubuntu $(lsb_release -cs) nginx" > /etc/apt/sources.list.d/nginx.list
 
 apt update && apt install nginx -y
@@ -53,13 +52,14 @@ EOF
 
 wget -q https://raw.githubusercontent.com/supermegaelf/sni-page/main/sni.html -O /usr/share/nginx/html/sni.html
 
-cat > /tmp/new_http_section << EOF
+cat > /tmp/new_http_section << 'EOF'
 http {
-    include       /etc/nginx/mime.types    default_type  application/octet-stream;
+    include       /etc/nginx/mime.types;
+    default_type  application/octet-stream;
 
-    log_format  main  '\$remote_addr - \$remote_user [\$time_local] "\$request" '
-                      '\$status \$body_bytes_sent "\$http_referer" '
-                      '"\$http_user_agent" "\$http_x_forwarded_for"';
+    log_format  main  '$remote_addr - $remote_user [$time_local] "$request" '
+                      '$status $body_bytes_sent "$http_referer" '
+                      '"$http_user_agent" "$http_x_forwarded_for"';
 
     access_log  /var/log/nginx/access.log  main;
 
@@ -105,6 +105,8 @@ EOF
 
 sed -i '/http {/,/}/d' /etc/nginx/nginx.conf
 cat /tmp/new_http_section >> /etc/nginx/nginx.conf
-rm /tmp/new_http_section
+rm -f /tmp/new_http_section
 
-nginx -t && systemctl restart nginx
+if nginx -t; then
+    systemctl restart nginx
+fi
