@@ -35,7 +35,7 @@ cat > /etc/nginx/conf.d/sni-site.conf << EOF
 server {
     server_name $SNI_DOMAIN;
 
-    listen 443 ssl proxy_protocol;
+    listen 443 ssl;
     http2 on;
 
     gzip on;
