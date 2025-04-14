@@ -1,6 +1,6 @@
 #!/bin/bash
 
-read -p "SNI domain: " SNI_DOMAIN
+read -p "Node domain: " NODE_DOMAIN
 
 apt update && apt install curl gnupg2 ca-certificates lsb-release -y
 
@@ -12,8 +12,8 @@ apt update && apt install nginx -y
 mkdir -p /etc/nginx/snippets
 
 cat > /etc/nginx/snippets/ssl.conf << EOF
-ssl_certificate /etc/letsencrypt/live/$SNI_DOMAIN/fullchain.pem;
-ssl_certificate_key /etc/letsencrypt/live/$SNI_DOMAIN/privkey.pem;
+ssl_certificate /etc/letsencrypt/live/$NODE_DOMAIN/fullchain.pem;
+ssl_certificate_key /etc/letsencrypt/live/$/privkey.pem;
 EOF
 
 cat > /etc/nginx/snippets/ssl-params.conf << EOF
@@ -33,7 +33,7 @@ rm -f /etc/nginx/conf.d/default.conf
 
 cat > /etc/nginx/conf.d/sni-site.conf << EOF
 server {
-    server_name $SNI_DOMAIN;
+    server_name $NODE_DOMAIN;
 
     listen 443 ssl;
     http2 on;
