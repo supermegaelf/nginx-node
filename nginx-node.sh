@@ -13,7 +13,7 @@ mkdir -p /etc/nginx/snippets
 
 cat > /etc/nginx/snippets/ssl.conf << EOF
 ssl_certificate /etc/letsencrypt/live/$NODE_DOMAIN/fullchain.pem;
-ssl_certificate_key /etc/letsencrypt/live/$/privkey.pem;
+ssl_certificate_key /etc/letsencrypt/live/$NODE_DOMAIN/privkey.pem;
 EOF
 
 cat > /etc/nginx/snippets/ssl-params.conf << EOF
