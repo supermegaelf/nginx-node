@@ -1,6 +1,6 @@
 #!/bin/bash
 
-read -p "Node domain: " NODE_DOMAIN
+read -p $'\033[32mNode domain: \033[0m' NODE_DOMAIN
 
 apt update && apt install curl gnupg2 ca-certificates lsb-release -y
 
